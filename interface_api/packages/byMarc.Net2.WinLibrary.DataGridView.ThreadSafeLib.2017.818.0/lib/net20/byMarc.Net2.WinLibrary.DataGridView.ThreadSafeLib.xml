@@ -1,0 +1,47 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+byMarc.Net2.WinLibrary.DataGridView.ThreadSafeLib
+</name>
+</assembly>
+<members>
+<member name="T:byMarc.Net2.WinLibrary.DataGridView.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:byMarc.Net2.WinLibrary.DataGridView.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:byMarc.Net2.WinLibrary.DataGridView.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="T:byMarc.Net2.WinLibrary.DataGridView.DataGridViewThreadSafeLib.DataGridViewInvokeRefreshDelegate">
+ <summary>
+ Refreshs the SqlGridView.  This method is thread-safe.
+ </summary>
+ <param name="dataGridView"></param>
+ <remarks></remarks>
+</member>
+<member name="T:byMarc.Net2.WinLibrary.DataGridView.DataGridViewThreadSafeLib.DataGridViewInvokeRowsClearDelegate">
+ <summary>
+ Clears all of the rows from the DataGridView control.  This method is thread-safe.
+ </summary>
+ <param name="dataGridView"></param>
+ <remarks></remarks>
+</member>
+<member name="T:byMarc.Net2.WinLibrary.DataGridView.DataGridViewThreadSafeLib.DataGridViewInvokeEndEditDelegate">
+ <summary>
+ Calls the EndEdit method.  This method is thread-safe.
+ </summary>
+ <param name="dataGridView"></param>
+ <remarks></remarks>
+</member>
+</members>
+</doc>

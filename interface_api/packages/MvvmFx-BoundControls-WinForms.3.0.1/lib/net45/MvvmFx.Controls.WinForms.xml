@@ -1,0 +1,1043 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MvvmFx.Controls.WinForms</name>
+    </assembly>
+    <members>
+        <member name="T:MvvmFx.Controls.WinForms.BindingSourceRefresh">
+            <summary>
+            BindingSourceRefresh contains functionality for refreshing the data bound to controls on Host as well as a mechiaism for catching data
+            binding errors that occur in Host.
+            </summary>
+            <remarks>Windows Forms extender control that resolves the
+            data refresh issue with data bound detail controls
+            as discussed in Chapter 5.</remarks>
+        </member>
+        <member name="E:MvvmFx.Controls.WinForms.BindingSourceRefresh.BindingError">
+            <summary>
+            BindingError event is raised when a data binding error occurs due to a exception.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingSourceRefresh.#ctor">
+            <summary>
+            Constructor creates a new BindingSourceRefresh component then initialises all the different sub components.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingSourceRefresh.#ctor(System.ComponentModel.IContainer)">
+            <summary>
+            Constructor creates a new BindingSourceRefresh component, adds the component to the container supplied before initialising all the different sub components.
+            </summary>
+            <param name="container">The container the component is to be added to.</param>
+        </member>
+        <member name="F:MvvmFx.Controls.WinForms.BindingSourceRefresh.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingSourceRefresh.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingSourceRefresh.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingSourceRefresh.CanExtend(System.Object)">
+            <summary>
+            CanExtend() returns true if extendee is a binding source.
+            </summary>
+            <param name="extendee">The control to be extended.</param>
+            <returns>True if the control is a binding source, else false.</returns>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingSourceRefresh.GetReadValuesOnChange(System.Windows.Forms.BindingSource)">
+            <summary>
+            GetReadValuesOnChange() gets the value of the custom ReadValuesOnChange extender property added to extended controls.
+            property added to extended controls.
+            </summary>
+            <param name="source">Control being extended.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingSourceRefresh.SetReadValuesOnChange(System.Windows.Forms.BindingSource,System.Boolean)">
+            <summary>
+            SetReadValuesOnChange() sets the value of the custom ReadValuesOnChange extender
+            property added to extended controls.
+            </summary>
+            <param name="source">Control being extended.</param>
+            <param name="value">New value of property.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BindingSourceRefresh.Host">
+            <summary>
+            Not in use - kept for backward  compatibility
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BindingSourceRefresh.RefreshOnException">
+            <summary>
+            Forces the binding to re-read after an exception is thrown when changing the binding value
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingSourceRefresh.RegisterControlEvents(System.Windows.Forms.ICurrencyManagerProvider,System.Boolean)">
+            <summary>
+            RegisterControlEvents() registers all the relevant events for the container control supplied and also to all child controls
+            in the oontainer control.
+            </summary>
+            <param name="container">The control (including child controls) to have the refresh events registered.</param>
+            <param name="register">True to register the events, false to unregister them.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingSourceRefresh.RegisterBindingEvents(System.Windows.Forms.BindingsCollection,System.Boolean)">
+            <summary>
+            Registers the control events.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="register">if set to <c>true</c> [register].</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingSourceRefresh.RegisterBindingEvent(System.Windows.Forms.Binding,System.Boolean)">
+            <summary>
+            Registers the binding event.
+            </summary>
+            <param name="register">if set to <c>true</c> [register].</param>
+            <param name="binding">The binding.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingSourceRefresh.Bindings_CollectionChanging(System.Object,System.ComponentModel.CollectionChangeEventArgs)">
+             <summary>
+             Handles the CollectionChanging event of the Bindings control.
+            
+             Remove event hooks for element or entire list depending on CollectionChangeAction.
+             </summary>
+             <param name="sender">The source of the event.</param>
+             <param name="e">The <see cref="T:System.ComponentModel.CollectionChangeEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingSourceRefresh.Bindings_CollectionChanged(System.Object,System.ComponentModel.CollectionChangeEventArgs)">
+             <summary>
+             Handles the CollectionChanged event of the Bindings control.
+            
+             Add event hooks for element or entire list depending on CollectionChangeAction.
+             </summary>
+             <param name="sender">The source of the event.</param>
+             <param name="e">The <see cref="T:System.ComponentModel.CollectionChangeEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingSourceRefresh.Control_BindingComplete(System.Object,System.Windows.Forms.BindingCompleteEventArgs)">
+            <summary>
+            Control_BindingComplete() is a event driven routine triggered when one of the control's bindings has been completed.
+            Control_BindingComplete() simply validates the result where if the result was a exception then the BindingError
+            event is raised, else if the binding was a successful data source update and we are to re-read the value on changed then
+            the binding value is reread into the control.
+            </summary>
+            <param name="sender">The object that triggered the event.</param>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingSourceRefresh.System#ComponentModel#ISupportInitialize#BeginInit">
+            <summary>
+            BeginInit() is called when the component is starting to be initialised. BeginInit() simply sets the initialisation flag to true.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingSourceRefresh.System#ComponentModel#ISupportInitialize#EndInit">
+            <summary>
+            EndInit() is called when the component has finished being initialised.  EndInt() sets the initialise flag to false then runs
+            through registering all the different events that the component needs to hook into in Host.
+            </summary>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.BindingErrorEventHandler">
+            <summary>
+            BindingErrorEventHandler delegates is the event handling definition for handling data binding errors that occurred due to exceptions.
+            </summary>
+            <param name="sender">The object that triggered the event.</param>
+            <param name="e">The event arguments.</param>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.BindingErrorEventArgs">
+            <summary>
+            BindingErrorEventArgs defines the event arguments for reporting a data binding error due to a exception.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BindingErrorEventArgs.Exception">
+            <summary>
+            Exception gets the exception that caused the binding error.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BindingErrorEventArgs.Binding">
+            <summary>
+            Binding gets the binding that caused the exception.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BindingErrorEventArgs.#ctor(System.Windows.Forms.Binding,System.Exception)">
+            <summary>
+            Constructor creates a new BindingErrorEventArgs object instance using the information specified.
+            </summary>
+            <param name="binding">The binding that caused th exception.</param>
+            <param name="exception">The exception that caused the error.</param>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.BoundForm">
+            <summary>
+            A <see cref="T:System.Windows.Forms.Form"/> that uses <see cref="T:MvvmFx.Controls.WinForms.BindingSourceRefresh"/>
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundForm.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MvvmFx.Controls.WinForms.BoundForm"/> class.
+            </summary>
+        </member>
+        <member name="F:MvvmFx.Controls.WinForms.BoundForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:MvvmFx.Controls.WinForms.BoundForm.bindingSourceRefresh">
+            <summary>
+            The binding source refresh component.
+            </summary>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.BoundListView">
+            <summary>
+            Data binding enabled list view control.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundListView.DataSource">
+            <summary>
+            Gets or sets the data source for this <see cref="T:MvvmFx.Controls.WinForms.BoundListView"/>.
+            </summary>
+            <returns>
+            An object that implements the <see cref="T:System.Collections.IList"/> or
+            <see cref="T:System.ComponentModel.IListSource"/> interfaces,
+            such as a <see cref="T:System.Data.DataSet"/> or an <see cref="T:System.Array"/>. The default is null.
+            </returns>>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundListView.DataMember">
+            <summary>
+            Gets or sets the name of the list or table in the data source for which
+            the <see cref="T:MvvmFx.Controls.WinForms.BoundListView"/> is displaying data.
+            </summary>
+            <returns>
+            The name of the table or list in the <see cref="P:MvvmFx.Controls.WinForms.BoundListView.DataSource"/> for which the
+            <see cref="T:MvvmFx.Controls.WinForms.BoundListView"/> is displaying data. The default is <see cref="F:System.String.Empty"/>.
+            </returns>
+            <exception cref="T:System.Exception">
+            An error occurred in the data source and either there is no handler for the <see cref="E:System.Windows.Forms.DataGridView.DataError"/>
+            event or the handler has set the <see cref="P:System.Windows.Forms.DataGridViewDataErrorEventArgs.ThrowException"/> property to true.
+            The exception object can typically be cast to type <see cref="T:System.FormatException"/>.
+            </exception>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundListView.SelectedItem">
+            <summary>
+            Gets the selected item.
+            </summary>
+            <value>
+            The selected item.
+            </value>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundListView.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MvvmFx.Controls.WinForms.BoundListView"/> class.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundListView.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundListView.TryDataBinding">
+            <summary>
+            Tries to get a new CurrencyManager for new DataBinding
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundListView.UpdateAllData">
+            <summary>
+            Updates all Items.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundListView.AddItem(System.Int32)">
+            <summary>
+            Adds a new item.
+            </summary>
+            <param name="index">The index of the item.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundListView.UpdateItem(System.Int32)">
+            <summary>
+            Updates the data of the item with the DataSource.
+            </summary>
+            <param name="index">The index of the item.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundListView.GetListViewItem(System.Int32)">
+            <summary>
+            Returns a <see cref="T:System.Windows.Forms.ListViewItem"/> wich contains the row-data at given index.
+            </summary>
+            <param name="index">The index of the row.</param>
+            <returns>A item wich contains the data.</returns>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundListView.DeleteItem(System.Int32)">
+            <summary>
+            Delete the item at the given index.
+            </summary>
+            <param name="index">The index of the item.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundListView.CalculateColumns">
+            <summary>
+            Calculates the Colums of the <see cref="T:MvvmFx.Controls.WinForms.BoundListView"/>.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundListView.OnBindingContextChanged(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.BindingContextChanged"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data. </param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundListView.OnSelectedIndexChanged(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.ListView.SelectedIndexChanged" /> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs" /> that contains the event data.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundListView.OnAfterLabelEdit(System.Windows.Forms.LabelEditEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.ListView.AfterLabelEdit" /> event.
+            </summary>
+            <param name="e">A <see cref="T:System.Windows.Forms.LabelEditEventArgs" /> that contains the event data.</param>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.BoundTreeNode">
+            <summary>
+            Tree node with additional data related information.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeNode.#ctor(System.Int32)">
+            <summary>
+            Default constructor of the node.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeNode.NodeId">
+            <summary>
+            Gets or sets the node identifier.
+            </summary>
+            <value>
+            The node identifier.
+            </value>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeNode.ParentNodeId">
+            <summary>
+            Gets or sets the parent node identifier.
+            </summary>
+            <value>
+            The parent node identifier.
+            </value>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeNode.Position">
+            <summary>
+            Gets or sets the node position in the current currency manager.
+            </summary>
+            <value>
+            The node position in the current currency manager.
+            </value>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeNode.ReadOnly">
+            <summary>
+            Gets or sets a value indicating whether the node is read only.
+            </summary>
+            <value>
+              <c>true</c> if the node is read only; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeNode.NodeError">
+            <summary>
+            Gets a value indicating whether there is a node error.
+            </summary>
+            <value>
+              <c>true</c> if there is a node error; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeNode.CanSelectNode">
+            <summary>
+            Gets a value indicating whether this node can be selectede.
+            </summary>
+            <value>
+            <c>true</c> if this node can be selected; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeNode.MoveToFirstTreeNode">
+            <summary>
+            Moves to first tree node.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeNode.MoveToPreviousTreeNode">
+            <summary>
+            Moves to previous tree node.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeNode.MoveToNextTreeNode">
+            <summary>
+            Moves to next tree node.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeNode.MoveToLastTreeNode">
+            <summary>
+            Moves to last tree node.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeNode.FirstTreeNode">
+            <summary>
+            Gets the first tree node of the tree view.
+            </summary>
+            <returns>The first TreeNode.</returns>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeNode.LastTreeNode">
+            <summary>
+            Gets the last tree node of the tree view.
+            </summary>
+            <returns>The last TreeNode.</returns>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeNode.NextTreeNode">
+            <summary>
+            Gets the tree node following the current tree node.
+            </summary>
+            <returns>The next TreeNode.</returns>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeNode.NextTreeNode(System.Windows.Forms.TreeNode)">
+            <summary>
+            Gets the tree node following the specifies tree node.
+            </summary>
+            <returns>The next TreeNode.</returns>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeNode.PrevTreeNode">
+            <summary>
+            Gets the tree node before the current tree node.
+            </summary>
+            <returns>The previous TreeNode.</returns>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeNode.PrevTreeNode(System.Windows.Forms.TreeNode)">
+            <summary>
+            Gets the tree node before the specifies tree node.
+            </summary>
+            <returns>The previous TreeNode.</returns>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.BoundUserControl">
+            <summary>
+            A <see cref="T:System.Windows.Forms.UserControl"/> that uses <see cref="T:MvvmFx.Controls.WinForms.BindingSourceRefresh"/>
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundUserControl.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:MvvmFx.Controls.WinForms.BoundUserControl"/> class.
+            </summary>
+        </member>
+        <member name="F:MvvmFx.Controls.WinForms.BoundUserControl.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundUserControl.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundUserControl.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:MvvmFx.Controls.WinForms.BoundUserControl.bindingSourceRefresh">
+            <summary>
+            The binding source refresh component.
+            </summary>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.Design.DropDownTypeEditor">
+            <summary>
+            Base class for simple drop down type editors.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.Design.DropDownTypeEditor.GetEditStyle(System.ComponentModel.ITypeDescriptorContext)">
+            <summary>
+            Overrides to set editor style in DropDown.
+            </summary>
+            <param name="context">Type descriptor context.</param>
+            <returns>Style of the editor.</returns>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.Design.DropDownTypeEditor.EditValue(System.ComponentModel.ITypeDescriptorContext,System.IServiceProvider,System.Object)">
+            <summary>
+            Edits the specified object's value using the editor style indicated by the <see cref="M:System.Drawing.Design.UITypeEditor.GetEditStyle" /> method.
+            </summary>
+            <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext" /> that can be used to gain additional context information.</param>
+            <param name="provider">An <see cref="T:System.IServiceProvider" /> that this editor can use to obtain services.</param>
+            <param name="value">The object to edit.</param>
+            <returns>
+            The new value of the object. If the value of the object has not changed, this should return the same object it was passed.
+            </returns>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.Design.DropDownTypeEditor.FillListBox(System.Windows.Forms.ListBox,System.ComponentModel.ITypeDescriptorContext,System.Object)">
+            <summary>
+            Implement this to fill listBox.Items.
+            </summary>
+            <param name="listBox">ListBox control to fill.</param>
+            <param name="context">Type descriptor context.</param>
+            <param name="value">Current value.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.Design.DropDownTypeEditor.GetValueFromListItem(System.ComponentModel.ITypeDescriptorContext,System.Object)">
+            <summary>
+            Override this to change output value.
+            </summary>
+            <param name="context">Type descriptor context.</param>
+            <param name="value">Value to change.</param>
+            <returns>Changed value.</returns>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.Design.FieldTypeEditor">
+            <summary>
+            Data members fields editor.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.Design.FieldTypeEditor.FillListBox(System.Windows.Forms.ListBox,System.ComponentModel.ITypeDescriptorContext,System.Object)">
+            <summary>
+            Fill list box with fileds of the current datasource.
+            </summary>
+            <param name="listBox">ListBox control to fill.</param>
+            <param name="context">Type descriptor context.</param>
+            <param name="value">Current value.</param>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.BoundTreeView">
+            <summary>
+            Data binding enabled hierarchical tree view control.
+            </summary>
+        </member>
+        <member name="F:MvvmFx.Controls.WinForms.BoundTreeView.Logger">
+            <summary>
+            The logger
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.DuplicatedCaption">
+            <summary>
+            Gets or sets the duplicated caption for the MessageBox.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.DuplicatedMessage">
+            <summary>
+            Gets or sets the duplicated message for the MessageBox.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.SelfParent">
+            <summary>
+            Gets or sets the self parent  message for the node ToolTip.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.InexistentParent">
+            <summary>
+            Gets or sets the inexistent parent message for the node ToolTip.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.GeneralNodeError">
+            <summary>
+            Gets or sets the general node error message for the node ToolTip.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.DataSource">
+            <summary>
+            Gets or sets the data source for this <see cref="T:MvvmFx.Controls.WinForms.BoundTreeView"/>.
+            </summary>
+            <returns>
+            An object that implements the <see cref="T:System.Collections.IList"/> or
+            <see cref="T:System.ComponentModel.IListSource"/> interfaces. The default is null.
+            </returns>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.DataMember">
+            <summary>
+            Gets or sets the name of the list or table in the data source for which
+            the <see cref="T:MvvmFx.Controls.WinForms.BoundTreeView"/> is displaying data.
+            </summary>
+            <returns>
+            The name of the table or list in the <see cref="P:MvvmFx.Controls.WinForms.BoundTreeView.DataSource"/> for which the
+            <see cref="T:MvvmFx.Controls.WinForms.BoundTreeView"/> is displaying data. The default is <see cref="F:System.String.Empty"/>.
+            </returns>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.DisplayMember">
+            <summary>
+            Gets or sets the property to display for this <see cref="T:MvvmFx.Controls.WinForms.BoundTreeView"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> specifying the name of an object property that is contained in the collection specified
+            by the <see cref="P:System.Windows.Forms.ListControl.DataSource"/> property. The default is an empty string ("").
+            </returns>
+            <remarks>Editing of this member is available only for types that support converting from string.</remarks>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.ValueMember">
+            <summary>
+            Gets or sets the property to use as the actual value for the items in the <see cref="T:MvvmFx.Controls.WinForms.BoundTreeView"/>.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> representing the name of an object property that is contained in the collection specified
+            by the <see cref="P:System.Windows.Forms.ListControl.DataSource"/> property. The default is an empty string ("").
+            </returns>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.IdentifierMember">
+            <summary>
+            Gets or sets the unique identifier member.
+            </summary>
+            <returns>
+            The identifier member.
+            </returns>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.ParentIdentifierMember">
+            <summary>
+            Gets or sets the parent identifier member.
+            </summary>
+            <returns>
+            The parent identifier member.
+            </returns>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.ToolTipTextMember">
+            <summary>
+            Gets or sets the ToolTipText member.
+            </summary>
+            <returns>
+            The ToolTipText member.
+            </returns>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.ReadOnlyMember">
+            <summary>
+            Gets or sets the ReadOnly member.
+            </summary>
+            <returns>
+            The ReadOnly member.
+            </returns>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.SelectedValue">
+            <summary>
+            Gets the value of the member property specified by the <see cref="P:MvvmFx.Controls.WinForms.BoundTreeView.ValueMember"/> property.
+            </summary>
+            <returns>
+            An object containing the value of the member of the data source specified
+            by the <see cref="P:MvvmFx.Controls.WinForms.BoundTreeView.ValueMember"/> property.
+            </returns>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.SelectedNode">
+            <summary>
+            Gets or sets the tree node that is currently selected in the bound tree view control.
+            </summary>
+            <value>The <see cref="T:System.Windows.Forms.TreeNode"/> that is currently selected in the tree view control.</value>
+            <PermissionSet>
+              <IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" />
+              <IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+            </PermissionSet>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.Sorted">
+            <summary>
+            Gets or sets a value indicating whether the tree nodes in the tree view are sorted.
+            </summary>
+            <PermissionSet>
+              <IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" />
+              <IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+            </PermissionSet>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.ReadOnlyImageIndex">
+            <summary>Gets or sets the index of the image that is displayed for the ReadOnly tree node.</summary>
+            <returns>The zero-based index of the image in the <see cref="T:System.Windows.Forms.ImageList"></see> that is displayed
+            for the ReadOnly tree node. The default is -1.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">The value specified is less than -1. </exception>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.ReadOnlyImageKey">
+            <summary>Gets or sets the key for the image that is displayed for the ReadOnly tree node.</summary>
+            <returns>The key for the image that is displayed for the ReadOnly tree node..</returns>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.ReadOnlySelectedImageIndex">
+            <summary>Gets or sets the index of the image that is displayed when a ReadOnly tree node is selected.</summary>
+            <returns>The zero-based index of the image in the <see cref="T:System.Windows.Forms.ImageList"></see> that is displayed
+            when a ReadOnly tree node is selected. The default is -1.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">The value specified is less than -1. </exception>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.ReadOnlySelectedImageKey">
+            <summary>Gets or sets the key for the image that is displayed when a ReadOnly tree node is selected.</summary>
+            <returns>The key for the image that is displayed when a ReadOnly tree node is selected.</returns>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.ReadOnlyAllowSelect">
+            <summary>
+            Gets or sets a value indicating whether a ReadOnly tree node can be selected.
+            </summary>
+            <value>
+            <c>true</c> if the ReadOnly tree node can be selected; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.ReadOnlyAllowDrag">
+            <summary>
+            Gets or sets a value indicating whether a ReadOnly tree node can be dragged.
+            </summary>
+            <value>
+            <c>true</c> if the ReadOnly tree node can be dragged; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.ReadOnlyAllowDrop">
+            <summary>
+            Gets or sets a value indicating whether to block node drop on read only nodes.
+            </summary>
+            <value>
+            <c>true</c> if block node drop on read only nodes; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.AllowDropOnRoot">
+            <summary>
+            Gets or sets a value indicating whether to block node drop on the TreeView root.
+            </summary>
+            <value>
+            <c>true</c> if block node drop on the TreeView root; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.BoundTreeView.AllowDropOnDescendents">
+            <summary>
+            Gets or sets a value indicating whether to block node drop on its own descendents.
+            </summary>
+            <value>
+            <c>true</c> if block node drop on its own descendents; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeView.#ctor">
+            <summary>
+            Default constructor.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeView.InitLayout">
+            <summary>
+            Called after the control has been added to another container.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeView.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeView.TryDataBinding">
+            <summary>
+            Tries to get a new CurrencyManager for new DataBinding
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeView.Sort">
+            <summary>
+            Sorts the items in <see cref="T:System.Windows.Forms.TreeView" /> control.
+            </summary>
+            <PermissionSet>
+              <IPermission class="System.Security.Permissions.EnvironmentPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+              <IPermission class="System.Security.Permissions.SecurityPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Flags="UnmanagedCode, ControlEvidence" />
+              <IPermission class="System.Diagnostics.PerformanceCounterPermission, System, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" Unrestricted="true" />
+            </PermissionSet>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeView.UpdateAllData">
+            <summary>
+            Updates all nodes.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeView.OnBindingContextChanged(System.EventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.BindingContextChanged"/> event.
+            </summary>
+            <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data. </param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeView.OnItemDrag(System.Windows.Forms.ItemDragEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.TreeView.ItemDrag"/> event.
+            </summary>
+            <param name="e">The <see cref="T:System.Windows.Forms.ItemDragEventArgs"/> instance containing the event data.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeView.OnDragOver(System.Windows.Forms.DragEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.DragOver" /> event.
+            </summary>
+            <param name="e">A <see cref="T:System.Windows.Forms.DragEventArgs" /> that contains the event data.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeView.OnDragDrop(System.Windows.Forms.DragEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.Control.DragDrop" /> event.
+            </summary>
+            <param name="e">A <see cref="T:System.Windows.Forms.DragEventArgs" /> that contains the event data.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeView.OnBeforeSelect(System.Windows.Forms.TreeViewCancelEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.TreeView.BeforeSelect" /> event.
+            </summary>
+            <param name="e">A <see cref="T:System.Windows.Forms.TreeViewCancelEventArgs" /> that contains the event data.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeView.OnAfterSelect(System.Windows.Forms.TreeViewEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.TreeView.AfterSelect" /> event.
+            </summary>
+            <param name="e">A <see cref="T:System.Windows.Forms.TreeViewEventArgs" /> that contains the event data.</param>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeView.OnAfterLabelEdit(System.Windows.Forms.NodeLabelEditEventArgs)">
+            <summary>
+            Raises the <see cref="E:System.Windows.Forms.TreeView.AfterLabelEdit"/> event.
+            </summary>
+            <param name="e">A <see cref="T:System.Windows.Forms.NodeLabelEditEventArgs"/> that contains the event data. </param>
+        </member>
+        <member name="E:MvvmFx.Controls.WinForms.BoundTreeView.SelectedValueChanged">
+            <summary>
+            Occurs when after the selected value changeds.
+            </summary>
+        </member>
+        <member name="M:MvvmFx.Controls.WinForms.BoundTreeView.OnSelectedValueChanged">
+            <summary>
+            Called when after the selected value changeds.
+            </summary>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.INamedBindable">
+            <summary>
+            Defines a bindable component with a Name property.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.INamedBindable.Name">
+            <summary>
+            Gets or sets the Name property of the component object.
+            </summary>
+            <value>
+            The component Name.
+            </value>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.LogManager">
+            <summary>
+            Used to manage logging.
+            </summary>
+        </member>
+        <member name="F:MvvmFx.Controls.WinForms.LogManager.GetLog">
+            <summary>
+            Creates an <see cref="T:MvvmFx.Logging.ILog"/> for the provided type.
+            </summary>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.MenuItem">
+            <summary>
+            Data binding enabled MenuItem.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.MenuItem.BindingContext">
+            <summary>Gets or sets the collection of currency managers for the <see cref="T:System.Windows.Forms.IBindableComponent" />. </summary>
+            <returns>The collection of <see cref="T:System.Windows.Forms.BindingManagerBase" /> objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.MenuItem.DataBindings">
+            <summary>Gets the collection of data-binding objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</summary>
+            <returns>The <see cref="T:System.Windows.Forms.ControlBindingsCollection" /> for this <see cref="T:System.Windows.Forms.IBindableComponent" />. </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.Properties.Resources.DuplicatedCaption">
+            <summary>
+              Looks up a localized string similar to Duplicated Identifier Error.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.Properties.Resources.DuplicatedMessage">
+            <summary>
+              Looks up a localized string similar to Node &quot;{0}&quot; duplicates identifier &quot;{1}&quot;.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.Properties.Resources.EditFailed">
+            <summary>
+              Looks up a localized string similar to Edit failed.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.Properties.Resources.GeneralNodeError">
+            <summary>
+              Looks up a localized string similar to Error at node..
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.Properties.Resources.InexistentParent">
+            <summary>
+              Looks up a localized string similar to Parent of node does not exist..
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.Properties.Resources.SelfParent">
+            <summary>
+              Looks up a localized string similar to Parent of node cannot be the node itself..
+            </summary>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.StatusBarPanel">
+            <summary>
+            Data binding enabled StatusBarPanel.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.StatusBarPanel.BindingContext">
+            <summary>Gets or sets the collection of currency managers for the <see cref="T:System.Windows.Forms.IBindableComponent" />. </summary>
+            <returns>The collection of <see cref="T:System.Windows.Forms.BindingManagerBase" /> objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.StatusBarPanel.DataBindings">
+            <summary>Gets the collection of data-binding objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</summary>
+            <returns>The <see cref="T:System.Windows.Forms.ControlBindingsCollection" /> for this <see cref="T:System.Windows.Forms.IBindableComponent" />. </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.ToolBarButton">
+            <summary>
+            Data binding enabled ToolBarButton.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolBarButton.BindingContext">
+            <summary>Gets or sets the collection of currency managers for the <see cref="T:System.Windows.Forms.IBindableComponent" />. </summary>
+            <returns>The collection of <see cref="T:System.Windows.Forms.BindingManagerBase" /> objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolBarButton.DataBindings">
+            <summary>Gets the collection of data-binding objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</summary>
+            <returns>The <see cref="T:System.Windows.Forms.ControlBindingsCollection" /> for this <see cref="T:System.Windows.Forms.IBindableComponent" />. </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.ToolStripButton">
+            <summary>
+            Data binding enabled ToolStripButton.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripButton.BindingContext">
+            <summary>Gets or sets the collection of currency managers for the <see cref="T:System.Windows.Forms.IBindableComponent" />. </summary>
+            <returns>The collection of <see cref="T:System.Windows.Forms.BindingManagerBase" /> objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripButton.DataBindings">
+            <summary>Gets the collection of data-binding objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</summary>
+            <returns>The <see cref="T:System.Windows.Forms.ControlBindingsCollection" /> for this <see cref="T:System.Windows.Forms.IBindableComponent" />. </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.ToolStripDropDownButton">
+            <summary>
+            Data binding enabled ToolStripDropDownButton.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripDropDownButton.BindingContext">
+            <summary>Gets or sets the collection of currency managers for the <see cref="T:System.Windows.Forms.IBindableComponent" />. </summary>
+            <returns>The collection of <see cref="T:System.Windows.Forms.BindingManagerBase" /> objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripDropDownButton.DataBindings">
+            <summary>Gets the collection of data-binding objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</summary>
+            <returns>The <see cref="T:System.Windows.Forms.ControlBindingsCollection" /> for this <see cref="T:System.Windows.Forms.IBindableComponent" />. </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.ToolStripLabel">
+            <summary>
+            Data binding enabled ToolStripLabel.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripLabel.BindingContext">
+            <summary>Gets or sets the collection of currency managers for the <see cref="T:System.Windows.Forms.IBindableComponent" />. </summary>
+            <returns>The collection of <see cref="T:System.Windows.Forms.BindingManagerBase" /> objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripLabel.DataBindings">
+            <summary>Gets the collection of data-binding objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</summary>
+            <returns>The <see cref="T:System.Windows.Forms.ControlBindingsCollection" /> for this <see cref="T:System.Windows.Forms.IBindableComponent" />. </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.ToolStripMenuItem">
+            <summary>
+            Data binding enabled ToolStripMenuItem.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripMenuItem.BindingContext">
+            <summary>Gets or sets the collection of currency managers for the <see cref="T:System.Windows.Forms.IBindableComponent" />. </summary>
+            <returns>The collection of <see cref="T:System.Windows.Forms.BindingManagerBase" /> objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripMenuItem.DataBindings">
+            <summary>Gets the collection of data-binding objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</summary>
+            <returns>The <see cref="T:System.Windows.Forms.ControlBindingsCollection" /> for this <see cref="T:System.Windows.Forms.IBindableComponent" />. </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.ToolStripProgressBar">
+            <summary>
+            Data binding enabled ToolStripProgressBar.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripProgressBar.BindingContext">
+            <summary>Gets or sets the collection of currency managers for the <see cref="T:System.Windows.Forms.IBindableComponent" />. </summary>
+            <returns>The collection of <see cref="T:System.Windows.Forms.BindingManagerBase" /> objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripProgressBar.DataBindings">
+            <summary>Gets the collection of data-binding objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</summary>
+            <returns>The <see cref="T:System.Windows.Forms.ControlBindingsCollection" /> for this <see cref="T:System.Windows.Forms.IBindableComponent" />. </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.ToolStripSeparator">
+            <summary>
+            Data binding enabled ToolStripSeparator.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripSeparator.BindingContext">
+            <summary>Gets or sets the collection of currency managers for the <see cref="T:System.Windows.Forms.IBindableComponent" />. </summary>
+            <returns>The collection of <see cref="T:System.Windows.Forms.BindingManagerBase" /> objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripSeparator.DataBindings">
+            <summary>Gets the collection of data-binding objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</summary>
+            <returns>The <see cref="T:System.Windows.Forms.ControlBindingsCollection" /> for this <see cref="T:System.Windows.Forms.IBindableComponent" />. </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.ToolStripSplitButton">
+            <summary>
+            Data binding enabled ToolStripSplitButton.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripSplitButton.BindingContext">
+            <summary>Gets or sets the collection of currency managers for the <see cref="T:System.Windows.Forms.IBindableComponent" />. </summary>
+            <returns>The collection of <see cref="T:System.Windows.Forms.BindingManagerBase" /> objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripSplitButton.DataBindings">
+            <summary>Gets the collection of data-binding objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</summary>
+            <returns>The <see cref="T:System.Windows.Forms.ControlBindingsCollection" /> for this <see cref="T:System.Windows.Forms.IBindableComponent" />. </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.ToolStripStatusLabel">
+            <summary>
+            Data binding enabled ToolStripStatusLabel.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripStatusLabel.BindingContext">
+            <summary>Gets or sets the collection of currency managers for the <see cref="T:System.Windows.Forms.IBindableComponent" />. </summary>
+            <returns>The collection of <see cref="T:System.Windows.Forms.BindingManagerBase" /> objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripStatusLabel.DataBindings">
+            <summary>Gets the collection of data-binding objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</summary>
+            <returns>The <see cref="T:System.Windows.Forms.ControlBindingsCollection" /> for this <see cref="T:System.Windows.Forms.IBindableComponent" />. </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="T:MvvmFx.Controls.WinForms.ToolStripTextBox">
+            <summary>
+            Data binding enabled ToolStripTextBox.
+            </summary>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripTextBox.BindingContext">
+            <summary>Gets or sets the collection of currency managers for the <see cref="T:System.Windows.Forms.IBindableComponent" />. </summary>
+            <returns>The collection of <see cref="T:System.Windows.Forms.BindingManagerBase" /> objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="P:MvvmFx.Controls.WinForms.ToolStripTextBox.DataBindings">
+            <summary>Gets the collection of data-binding objects for this <see cref="T:System.Windows.Forms.IBindableComponent" />.</summary>
+            <returns>The <see cref="T:System.Windows.Forms.ControlBindingsCollection" /> for this <see cref="T:System.Windows.Forms.IBindableComponent" />. </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+    </members>
+</doc>
